@@ -1,0 +1,24 @@
+name: "Build"
+on: push
+
+jobs:
+
+  macos:
+    runs-on: macos-latest
+    steps:
+    - name: "Compile and install dependencies"
+      run: |
+        brew install macos/sdl2.rb sdl2_image dylibbundler
+    - name: "Checkout sources"
+      uses: actions/checkout@v2
+    - name: "Compile"
+      run: |
+        make CFLAGS="-mmacosx-version-min=10.6" bin/brogue
+    - name: "Fix and bundle dylib references"
+      run: |
+        dylibbundler -cd -b -d bin/lib -p @executable_path/lib -x bin/brogue
+    - name: "Upload artifact"
+      uses: actions/upload-artifact@v1
+      with:
+        name: macos-bin
+        path: bin
