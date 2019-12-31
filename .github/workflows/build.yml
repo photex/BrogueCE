@@ -8,7 +8,7 @@ jobs:
     steps:
     - name: "Compile and install dependencies"
       run: |
-        brew install macos/sdl2.rb sdl2_image dylibbundler
+        brew install ./macos/sdl2.rb sdl2_image dylibbundler
     - name: "Checkout sources"
       uses: actions/checkout@v2
     - name: "Compile"
