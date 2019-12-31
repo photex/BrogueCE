@@ -27,7 +27,7 @@ class Sdl2 < Formula
 
     system "./autogen.sh" if build.head? || build.devel?
 
-    args = %W[--prefix=#{prefix} --without-x"]
+    args = %W[--prefix=#{prefix} --without-x]
     system "./configure", *args
     system "make", "install"
   end
