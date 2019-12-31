@@ -6,11 +6,11 @@ jobs:
   macos:
     runs-on: macos-latest
     steps:
-    - name: "Compile and install dependencies"
-      run: |
-        brew install ./macos/sdl2.rb sdl2_image dylibbundler
     - name: "Checkout sources"
       uses: actions/checkout@v2
+    - name: "Compile and install dependencies"
+      run: |
+        brew install macos/sdl2.rb sdl2_image dylibbundler
     - name: "Compile"
       run: |
         make CFLAGS="-mmacosx-version-min=10.6" bin/brogue
