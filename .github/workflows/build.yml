@@ -13,7 +13,10 @@ jobs:
         brew install macos/sdl2.rb sdl2_image dylibbundler
     - name: "Compile"
       run: |
-        make CFLAGS="-mmacosx-version-min=10.6" bin/brogue
+        make bin/brogue
+      env:
+        # 10.6 is the version targeted by the SDL build scripts
+        MACOSX_DEPLOYMENT_TARGET: "10.6"
     - name: "Fix and bundle dylib references"
       run: |
         dylibbundler -cd -b -d bin/lib -p @executable_path/lib -x bin/brogue

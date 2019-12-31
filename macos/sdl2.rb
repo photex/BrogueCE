@@ -21,10 +21,13 @@ class Sdl2 < Formula
     # keg-only but I doubt that will be needed.
     inreplace %w[sdl2.pc.in sdl2-config.in], "@prefix@", HOMEBREW_PREFIX
 
+    # Local change: set deployment target version environment variable
+    # 10.6 is chosen by SDL build scripts
+    ENV["MACOSX_DEPLOYMENT_TARGET"] = "10.6"
+
     system "./autogen.sh" if build.head? || build.devel?
 
-    # Local change: add deployment target version to compiler flags
-    args = %W[--prefix=#{prefix} --without-x CFLAGS="-mmacosx-version-min=10.6"]
+    args = %W[--prefix=#{prefix} --without-x"]
     system "./configure", *args
     system "make", "install"
   end
