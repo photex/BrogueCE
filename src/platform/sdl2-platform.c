@@ -5,7 +5,7 @@
 #include <stdint.h>
 
 #include <SDL.h>
-#include <SDL_image.h>
+#include <stb_image.h>
 
 #include "platform.h"
 
@@ -37,7 +37,7 @@ static void sdlfatal() {
 
 
 static void imgfatal() {
-    fprintf(stderr, "Fatal SDL_image error: %s\n", IMG_GetError());
+    fprintf(stderr, "Failed to load image! %s\n", stbi_failure_reason());
     exit(1);
 }
 
@@ -46,6 +46,28 @@ static void refreshWindow() {
     WinSurf = SDL_GetWindowSurface(Win);
     if (WinSurf == NULL) sdlfatal();
     refreshScreen();
+}
+
+static SDL_Surface* IMG_Load(char const* filename)
+{
+  const int required_format = STBI_rgb;
+  int width, height, original_format;
+  unsigned char* data = stbi_load(filename, &width, &height, &original_format, required_format);
+  if (data == NULL) {
+    imgfatal();
+  }
+
+  const int depth = 24;
+  const int pitch = 3*width;
+  const Uint32 pixel_format = SDL_PIXELFORMAT_RGB24;
+
+  SDL_Surface* surface = SDL_CreateRGBSurfaceWithFormatFrom(
+    (void*)data, width, height, depth, pitch, pixel_format);
+  if (surface == NULL) {
+    stbi_image_free(data);
+    sdlfatal();
+  }
+  return surface;
 }
 
 
@@ -280,8 +302,6 @@ static boolean pollBrogueEvent(rogueEvent *returnEvent, boolean textInput) {
 static void _gameLoop() {
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0) sdlfatal();
-
-    if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) imgfatal();
 
     lastEvent.eventType = EVENT_ERROR;
 
