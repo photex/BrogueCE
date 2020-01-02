@@ -95,6 +95,7 @@ short sortScoreBuffer() {
     brogueScoreEntry sortedScoreBuffer[HIGH_SCORES_COUNT];
     boolean lineSorted[HIGH_SCORES_COUNT];
 
+    mostRecentSortedLine = 0;
     mostRecentDate = 0;
 
     for (i=0; i<HIGH_SCORES_COUNT; i++) {
