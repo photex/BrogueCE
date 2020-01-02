@@ -1,3 +1,6 @@
+#ifdef BROGUE_SDL
+#include <SDL.h> // needed for SDLmain
+#endif
 #include "platform.h"
 
 extern playerCharacter rogue;
