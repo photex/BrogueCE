@@ -1,1 +1,10 @@
 *.o
+.idea/
+.build/
+.vs/
+third_party/libtcod-*/
+third_party/libtcod-*.tar.gz
+third_party/SDL2-*/
+third_party/SDL2-*.tar.gz
+bin/*.broguesave
+bin/BrogueHighScores.txt

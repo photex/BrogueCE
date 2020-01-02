@@ -1,0 +1,28 @@
+﻿{
+  "configurations": [
+    {
+      "name": "x64-Debug",
+      "generator": "Ninja",
+      "configurationType": "Debug",
+      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "buildRoot": "${workspaceRoot}\\.build\\debug",
+      "installRoot": "${workspaceRoot}\\.build\\debug\\install",
+      "cmakeCommandArgs": "-DBUNDLED_THIRD_PARTY=ON -DBUILD_SHARED_LIBS=OFF",
+      "buildCommandArgs": "",
+      "ctestCommandArgs": "",
+      "variables": []
+    },
+    {
+      "name": "x64-Release",
+      "generator": "Ninja",
+      "configurationType": "Release",
+      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "buildRoot": "${workspaceRoot}\\.build\\release",
+      "installRoot": "${workspaceRoot}\\.build\\release\\install",
+      "cmakeCommandArgs": "-DBUNDLED_THIRD_PARTY=ON -DBUILD_SHARED_LIBS=OFF",
+      "buildCommandArgs": "",
+      "ctestCommandArgs": "",
+      "variables": []
+    },
+  ]
+}
