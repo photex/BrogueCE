@@ -27,7 +27,12 @@
 #include <time.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#ifdef _MSC_VER
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#else
 #include <dirent.h>
+#endif
 
 #include "platform.h"
 
@@ -357,7 +362,27 @@ fileEntry *commitFilelist(struct filelist *list, char **namebuffer) {
 fileEntry *listFiles(short *fileCount, char **namebuffer) {
     struct filelist *list = newFilelist();
 
-    // windows: FindFirstFile/FindNextFile
+#ifdef _MSC_VER
+    WIN32_FIND_DATA ffd;
+    HANDLE hFind = INVALID_HANDLE_VALUE;
+
+    hFind = FindFirstFile(".", &ffd);
+    if (hFind == INVALID_HANDLE_VALUE)
+    {
+        *fileCount = 0;
+        return NULL;
+    }
+
+    do {
+        if (ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+        {
+            continue;
+        }
+        addfile(list, ffd.cFileName);
+    } while (FindNextFile(hFind, &ffd) != 0);
+
+    FindClose(hFind);
+#else
     DIR *dp= opendir ("./");
 
     if (dp != NULL) {
@@ -383,6 +408,7 @@ fileEntry *listFiles(short *fileCount, char **namebuffer) {
         *fileCount = 0;
         return NULL;
     }
+#endif // _MSC_VER
 
     fileEntry *files = commitFilelist(list, namebuffer);
 
